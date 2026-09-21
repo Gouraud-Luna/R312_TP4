@@ -1,0 +1,49 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+
+---
+
+<Layout>
+
+<h1 class="text-2xl">Test Astro et Plot (Observablehq)</h1>
+<div><a href="/">Acceuil</a></div>
+<div id="myplot"></div>
+<select name="olympians" id="olympians">
+  <option value="">All nationality</option>
+  <option  value="ESP">Espagnol</option>
+  <option  value="KOR">Coréen</option>
+  <option value="USA">Américain</option>
+  <option value="AUS">Australien</option>
+  <option value="NZL">Néozélandais</option>
+  <option value="CAN">Canadien</option>
+</select>
+<script>
+    import * as Plot from "@observablehq/plot";
+    import olympians from "../assets/olympians.json";
+    const nationalitySelect:HTMLInputElement = document.querySelector("#olympians")!;
+    function affiche() {
+      const nationality = nationalitySelect.value;
+      const plot = Plot.plot({
+        marks: [
+        Plot.dot(olympians, {
+          x: "height",
+          y: "weight",
+          stroke: "nationality",
+            filter: p=>p.nationality===nationality || !nationality
+          }),
+        ],
+      });
+  
+      const div = document.querySelector("#myplot");
+      div.innerHTML="";
+      div?.append(plot);
+    }
+
+    nationalitySelect.addEventListener("change",affiche)
+
+    affiche()
+  </script>
+</Layout>
+  
+ 
